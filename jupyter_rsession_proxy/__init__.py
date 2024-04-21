@@ -52,7 +52,10 @@ def get_system_user():
 
 def setup_rserver():
     def _get_env(port):
-        return dict(USER=get_system_user())
+        return {
+            'USER': get_system_user(),
+            'HOME': os.environ.get('HOME', '/home' + get_system_user()) # Ensure HOME on datahub
+        }
 
     def db_config(db_dir):
         '''
@@ -147,6 +150,7 @@ def setup_rsession():
             'R_SHARE_DIR': R_SHARE_DIR,
             'RSTUDIO_DEFAULT_R_VERSION_HOME': R_HOME,
             'RSTUDIO_DEFAULT_R_VERSION': version,
+            'HOME': os.environ.get('HOME', '/home/' + get_system_user())  # Ensure HOME on Datahub
         }
 
     def _get_cmd(port):
